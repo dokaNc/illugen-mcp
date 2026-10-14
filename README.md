@@ -15,17 +15,15 @@ Describe a texture, a VFX flipbook or a procedural mask in plain words: your age
 
 [Quick start](#quick-start) · [What it can do](#what-it-can-do) · [Tools](#tools) · [How it works](#how-it-works) · [FAQ](#faq)
 
+<br />
+
+<img src="docs/assets/demo.gif" alt="An AI agent builds three IlluGen graphs (lava, underwater caustics, energy web) through illugen-mcp and renders them" width="900" />
+
+<sub>Real tool calls and timings, real IlluGen renders. Reproduce them with <a href="examples/demo_scenes.py"><code>examples/demo_scenes.py</code></a>.</sub>
+
 </div>
 
 ---
-
-```text
-You:    Make a seamless 1024x1024 fire texture: Perlin noise, levels to boost contrast,
-        a red-orange-yellow color ramp, and export it as PNG to D:\vfx\fire.
-
-Agent:  project_new → node_add ×4 → link_add ×3 → gradient_set → project_validate → project_render
-        ✓ D:\vfx\fire\fire.png  (preview attached)
-```
 
 ## Quick start
 
@@ -131,6 +129,14 @@ and render it to C:\Users\me\Desktop\stone.
 | `project_normalize` | Load + save in IlluGen (fills defaults, refreshes the thumbnail), keeps a `.bak` | yes |
 
 Typical flow: `project_new` → `node_add` … → `link_add` … → `project_validate(engine=true)` → `project_render`.
+
+## Showcase
+
+<img src="docs/assets/showcase.jpg" alt="Lava, underwater caustics and energy web textures rendered by IlluGen through illugen-mcp" width="900" />
+
+Lava (Voronoi noise → levels → color ramp → glow), caustics (polygon fractal → caustics → ramp) and an energy
+web (Voronoi edges → ramp → glow): 4 to 5 nodes each, built and rendered by the agent in about 15 seconds.
+The exact graphs are in [`examples/demo_scenes.py`](examples/demo_scenes.py).
 
 ## Example prompts
 
