@@ -1,0 +1,32 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.dokaNc/illugen-mcp",
+  "title": "IlluGen",
+  "description": "Build, edit and render JangaFX IlluGen node graphs (textures, VFX) from your AI agent.",
+  "repository": {
+    "url": "https://github.com/dokaNc/illugen-mcp",
+    "source": "github"
+  },
+  "websiteUrl": "https://github.com/dokaNc/illugen-mcp",
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/dokaNc/illugen-mcp/releases/download/v0.1.0/illugen-mcp-0.1.0.mcpb",
+      "version": "0.1.0",
+      "fileSha256": "1339f4f9ce07646ffb5fea8ce5a886380bfc61b151afe6842dd7db5ddb968bf0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "ILLUGEN_EXE",
+          "description": "Path to IlluGen.exe, if not installed in C:\\Program Files\\JangaFX\\IlluGen",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "filepath"
+        }
+      ]
+    }
+  ]
+}

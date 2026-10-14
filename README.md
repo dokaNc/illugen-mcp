@@ -35,6 +35,12 @@ Describe a texture, a VFX flipbook or a procedural mask in plain words: your age
 
 ### 2. Add it to your agent
 
+**Claude Desktop: one click**
+
+Download `illugen-mcp-<version>.mcpb` from the [latest release](https://github.com/dokaNc/illugen-mcp/releases/latest)
+and open it (or drag it into Claude Desktop › Settings › Extensions). Needs [`uv`](https://docs.astral.sh/uv/)
+on your PATH. If IlluGen is installed elsewhere, set its path in the extension settings.
+
 **Claude Code**
 
 ```bash
@@ -222,3 +228,6 @@ IlluGen; this project neither includes nor modifies it.
 ## License
 
 [MIT](LICENSE)
+
+<!-- mcp-name: io.github.dokaNc/illugen-mcp -->
+

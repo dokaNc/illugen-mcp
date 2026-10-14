@@ -40,7 +40,7 @@ path = "illugen_mcp/__init__.py"
 packages = ["illugen_mcp"]
 
 [tool.hatch.build.targets.sdist]
-include = ["illugen_mcp", "tests", "README.md", "LICENSE", "CHANGELOG.md"]
+include = ["illugen_mcp", "tests", "examples", "scripts", "README.md", "LICENSE", "CHANGELOG.md"]
 
 [tool.ruff]
 line-length = 120

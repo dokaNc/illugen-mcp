@@ -9,3 +9,5 @@ First public release.
 - Curves, gradients, splines, subgraphs, parameter modulation, annotations.
 - Invisible, isolated rendering through the installed IlluGen.
 - `build_catalog` to refresh the node tables after an IlluGen update.
+- One-click MCP Bundle (`.mcpb`) for Claude Desktop, attached to the release.
+- Demo GIF, showcase renders and `examples/demo_scenes.py`.
