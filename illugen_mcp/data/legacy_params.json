@@ -1,0 +1,106 @@
+{
+ "illugen_version": "1.2.1",
+ "about": "Parameters written by older IlluGen versions (shipped presets: 1.1.0-1.2.0) that IlluGen 1.2.1 renames ('renamed', value moved to 'to') or ignores ('dropped') on load.",
+ "nodes": {
+  "Node_Cycle": {
+   "frequency": {
+    "action": "renamed",
+    "to": "frequency.hz",
+    "sample": "node_zoo_documentation.illugen",
+    "presets": 41
+   }
+  },
+  "Node_Geometry_Render": {
+   "camera_area": {
+    "action": "renamed",
+    "to": "camera_area_UI",
+    "sample": "stylized_smoke_puff.illugen",
+    "presets": 7
+   },
+   "camera_azimuth": {
+    "action": "renamed",
+    "to": "camera_azimuth_UI",
+    "sample": "stylized_smoke_puff.illugen",
+    "presets": 7
+   },
+   "camera_elevation": {
+    "action": "renamed",
+    "to": "camera_elevation_UI",
+    "sample": "stylized_smoke_puff.illugen",
+    "presets": 7
+   },
+   "camera_fov": {
+    "action": "renamed",
+    "to": "camera_fov_UI",
+    "sample": "stylized_smoke_puff.illugen",
+    "presets": 7
+   },
+   "camera_orthogonal": {
+    "action": "renamed",
+    "to": "camera_orthographic_UI",
+    "sample": "stylized_smoke_puff.illugen",
+    "presets": 7
+   },
+   "camera_roll": {
+    "action": "renamed",
+    "to": "camera_roll_UI",
+    "sample": "stylized_smoke_puff.illugen",
+    "presets": 7
+   }
+  },
+  "Node_Grayscale_Flood_Fill": {
+   "smallest_area": {
+    "action": "dropped",
+    "sample": "floodfill_animated_cracks.illugen",
+    "presets": 1
+   }
+  },
+  "Node_Islands_Generate": {
+   "largest_search_path": {
+    "action": "dropped",
+    "sample": "node_zoo_documentation.illugen",
+    "presets": 3
+   }
+  },
+  "Node_Oscillator": {
+   "frequency": {
+    "action": "renamed",
+    "to": "frequency.hz",
+    "sample": "node_zoo_documentation.illugen",
+    "presets": 15
+   }
+  },
+  "Node_Utils_Polar_To_Cartesian": {
+   "flip_h": {
+    "action": "dropped",
+    "sample": "node_zoo_documentation.illugen",
+    "presets": 1
+   },
+   "flip_v": {
+    "action": "dropped",
+    "sample": "node_zoo_documentation.illugen",
+    "presets": 1
+   },
+   "in_width": {
+    "action": "dropped",
+    "sample": "node_zoo_documentation.illugen",
+    "presets": 1
+   },
+   "mirror_h": {
+    "action": "dropped",
+    "sample": "node_zoo_documentation.illugen",
+    "presets": 1
+   },
+   "mirror_v": {
+    "action": "dropped",
+    "sample": "node_zoo_documentation.illugen",
+    "presets": 1
+   },
+   "out_width": {
+    "action": "dropped",
+    "sample": "node_zoo_documentation.illugen",
+    "presets": 1
+   }
+  }
+ }
+}

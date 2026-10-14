@@ -1,0 +1,3631 @@
+{
+ "illugen_version": "1.2.1",
+ "nodes": {
+  "Node_Camera": {
+   "inputs": [
+    [
+     "Control",
+     "Camera"
+    ]
+   ],
+   "outputs": [
+    [
+     "Camera",
+     "Camera"
+    ]
+   ],
+   "label": "Camera"
+  },
+  "Node_Camera_Utility_Look_At": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Camera Control",
+     "Camera"
+    ]
+   ],
+   "label": "Camera: Look At"
+  },
+  "Node_Color_Adjust": {
+   "inputs": [
+    [
+     "Base Color",
+     "Color"
+    ],
+    [
+     "Mask",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Color"
+    ]
+   ],
+   "label": "Color Adjust"
+  },
+  "Node_Color_Alpha_Premultiply": {
+   "inputs": [
+    [
+     "Input",
+     "Color"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Color"
+    ]
+   ],
+   "label": "Color Alpha Premultiply"
+  },
+  "Node_Color_Fractal": {
+   "inputs": [
+    [
+     "RGBA Pattern",
+     "Color"
+    ],
+    [
+     "UV",
+     "UV"
+    ],
+    [
+     "Background",
+     "Color"
+    ],
+    [
+     "Scale mod",
+     "Grayscale"
+    ],
+    [
+     "UV mod",
+     "Grayscale"
+    ],
+    [
+     "Opacity mod",
+     "Grayscale"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ],
+    [
+     "Hue mod",
+     "Grayscale"
+    ],
+    [
+     "Saturation mod",
+     "Grayscale"
+    ],
+    [
+     "Visibility mod",
+     "Grayscale"
+    ],
+    [
+     "Atlas mod",
+     "Grayscale"
+    ],
+    [
+     "Z position mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Color"
+    ]
+   ],
+   "label": "Color Fractal",
+   "extra_inputs": [
+    "Scale mod",
+    "UV mod",
+    "Opacity mod",
+    "Intensity mod",
+    "Hue mod",
+    "Saturation mod",
+    "Visibility mod",
+    "Atlas mod",
+    "Z position mod"
+   ]
+  },
+  "Node_Color_Hue_Spread": {
+   "inputs": [
+    [
+     "Gradient Mask",
+     "Grayscale"
+    ],
+    [
+     "Hue mod",
+     "Grayscale"
+    ],
+    [
+     "Saturation mod",
+     "Grayscale"
+    ],
+    [
+     "Value mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Color"
+    ]
+   ],
+   "label": "Color Hue Spread",
+   "extra_inputs": [
+    "Hue mod",
+    "Saturation mod",
+    "Value mod"
+   ]
+  },
+  "Node_Color_Interpolate": {
+   "inputs": [
+    [
+     "Input",
+     "Grayscale"
+    ],
+    [
+     "Hue mod",
+     "Grayscale"
+    ],
+    [
+     "Saturation mod",
+     "Grayscale"
+    ],
+    [
+     "Value mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Color"
+    ]
+   ],
+   "label": "Color Interpolate",
+   "extra_inputs": [
+    "Hue mod",
+    "Saturation mod",
+    "Value mod"
+   ]
+  },
+  "Node_Color_Ramp": {
+   "inputs": [
+    [
+     "Input",
+     "Grayscale"
+    ],
+    [
+     "Hue mod",
+     "Grayscale"
+    ],
+    [
+     "Saturation mod",
+     "Grayscale"
+    ],
+    [
+     "Value mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Color"
+    ]
+   ],
+   "label": "Color Ramp",
+   "extra_inputs": [
+    "Hue mod",
+    "Saturation mod",
+    "Value mod"
+   ]
+  },
+  "Node_Color_Replace": {
+   "inputs": [
+    [
+     "Input",
+     "Color"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Color"
+    ],
+    [
+     "Mask",
+     "Grayscale"
+    ]
+   ],
+   "label": "Color Replace"
+  },
+  "Node_Color_Uniform": {
+   "inputs": [
+    [
+     "Hue mod",
+     "Grayscale"
+    ],
+    [
+     "Saturation mod",
+     "Grayscale"
+    ],
+    [
+     "Value mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Color"
+    ]
+   ],
+   "label": "Color Uniform",
+   "extra_inputs": [
+    "Hue mod",
+    "Saturation mod",
+    "Value mod"
+   ]
+  },
+  "Node_Export_Color": {
+   "inputs": [
+    [
+     "Color",
+     "Color"
+    ]
+   ],
+   "outputs": [],
+   "label": "Export: Color"
+  },
+  "Node_Export_Grayscale": {
+   "inputs": [
+    [
+     "Mask",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [],
+   "label": "Export: Grayscale"
+  },
+  "Node_Export_Mesh": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [],
+   "label": "Export: Model"
+  },
+  "Node_Export_Normal": {
+   "inputs": [
+    [
+     "Normal",
+     "Normal"
+    ]
+   ],
+   "outputs": [],
+   "label": "Export: Normal"
+  },
+  "Node_Export_RGBA": {
+   "inputs": [
+    [
+     "Grayscale R",
+     "Grayscale"
+    ],
+    [
+     "Grayscale G",
+     "Grayscale"
+    ],
+    [
+     "Grayscale B",
+     "Grayscale"
+    ],
+    [
+     "Grayscale A",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [],
+   "label": "Export: Multi-Mask"
+  },
+  "Node_Export_Viewport": {
+   "inputs": [
+    [
+     "Viewport",
+     "RenderHDR"
+    ]
+   ],
+   "outputs": [],
+   "label": "Export: Viewport"
+  },
+  "Node_Export_Warp": {
+   "inputs": [
+    [
+     "UV",
+     "UV"
+    ]
+   ],
+   "outputs": [],
+   "label": "Export: UV"
+  },
+  "Node_Geometry_Accumulate": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Accumulate"
+  },
+  "Node_Geometry_Bake": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Material Mask",
+     "Color"
+    ],
+    [
+     "Position",
+     "Color"
+    ]
+   ],
+   "label": "Geo Texture Bake"
+  },
+  "Node_Geometry_Combine_Color": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ],
+    [
+     "Color input",
+     "Color"
+    ],
+    [
+     "UV",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Color",
+   "extra_inputs": [
+    "Color input",
+    "UV"
+   ]
+  },
+  "Node_Geometry_Combine_Mask": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ],
+    [
+     "Grayscale input",
+     "Grayscale"
+    ],
+    [
+     "UV",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Mask",
+   "extra_inputs": [
+    "Grayscale input",
+    "UV"
+   ]
+  },
+  "Node_Geometry_Combine_Scale": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ],
+    [
+     "Grayscale input",
+     "Grayscale"
+    ],
+    [
+     "UV",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Scale Points",
+   "extra_inputs": [
+    "Grayscale input",
+    "UV"
+   ]
+  },
+  "Node_Geometry_Combine_Transform": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ],
+    [
+     "Grayscale input",
+     "Grayscale"
+    ],
+    [
+     "UV",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo XForm",
+   "extra_inputs": [
+    "Grayscale input",
+    "UV"
+   ]
+  },
+  "Node_Geometry_Complex_Shapes": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Complex Shapes"
+  },
+  "Node_Geometry_Copy_And_Transform": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ],
+    [
+     "Points",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Copy and Transform"
+  },
+  "Node_Geometry_Copy_To_Points": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ],
+    [
+     "Points",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Copy To Points"
+  },
+  "Node_Geometry_Delete_Points": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Delete Points"
+  },
+  "Node_Geometry_Displace": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ],
+    [
+     "Displacement",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Displace"
+  },
+  "Node_Geometry_Extract_Points": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ],
+    [
+     "Scale input",
+     "Grayscale"
+    ],
+    [
+     "Color input",
+     "Color"
+    ]
+   ],
+   "outputs": [
+    [
+     "Points",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Extract Points",
+   "extra_inputs": [
+    "Scale input",
+    "Color input"
+   ]
+  },
+  "Node_Geometry_Fuse_Points": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Fuse Points"
+  },
+  "Node_Geometry_Honeycomb_Shapes": {
+   "inputs": [
+    [
+     "Control points",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Honeycomb Shapes"
+  },
+  "Node_Geometry_Merge": {
+   "inputs": [
+    [
+     "Geometry 1",
+     "GeometryBuffer"
+    ],
+    [
+     "Geometry 2",
+     "GeometryBuffer"
+    ],
+    [
+     "Geometry 3",
+     "GeometryBuffer"
+    ],
+    [
+     "Geometry 4",
+     "GeometryBuffer"
+    ],
+    [
+     "Geometry 5",
+     "GeometryBuffer"
+    ],
+    [
+     "Geometry 6",
+     "GeometryBuffer"
+    ],
+    [
+     "Geometry 7",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Merge",
+   "extra_inputs": [
+    "Geometry 2",
+    "Geometry 3",
+    "Geometry 4",
+    "Geometry 5",
+    "Geometry 6",
+    "Geometry 7"
+   ]
+  },
+  "Node_Geometry_Noise": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Noise"
+  },
+  "Node_Geometry_Points_Shape": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Points",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Points Shape"
+  },
+  "Node_Geometry_Promote": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Promote Attribute"
+  },
+  "Node_Geometry_Render": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ],
+    [
+     "Opacity",
+     "Grayscale"
+    ],
+    [
+     "Control",
+     "Camera"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Geo Render to Texture",
+   "polymorphic": true
+  },
+  "Node_Geometry_Render_Camera_Control": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Camera",
+     "Camera"
+    ]
+   ],
+   "label": "Geo Render Camera Control"
+  },
+  "Node_Geometry_Shapes": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Shapes"
+  },
+  "Node_Geometry_Space_Warp": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Space Warp"
+  },
+  "Node_Geometry_Spline": {
+   "inputs": [
+    [
+     "Control points",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Points",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Spline"
+  },
+  "Node_Geometry_Subdivide": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Subdivide"
+  },
+  "Node_Geometry_Sweep": {
+   "inputs": [
+    [
+     "Input path",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Sweep"
+  },
+  "Node_Geometry_Transform": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo Transform"
+  },
+  "Node_Geometry_UV": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ],
+    [
+     "In UV",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "Geo UV"
+  },
+  "Node_Geometry_VAT_Decode": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ],
+    [
+     "VA texture",
+     "Color"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "label": "VAT Decode"
+  },
+  "Node_Geometry_VAT_Encode": {
+   "inputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ]
+   ],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ],
+    [
+     "VA texture",
+     "Color"
+    ]
+   ],
+   "label": "VAT Encode"
+  },
+  "Node_Grayscale_AO": {
+   "inputs": [
+    [
+     "Input",
+     "Grayscale"
+    ],
+    [
+     "Background",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "AO"
+  },
+  "Node_Grayscale_Caustics": {
+   "inputs": [
+    [
+     "Grayscale input",
+     "Grayscale"
+    ],
+    [
+     "Emission mask",
+     "Grayscale"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ],
+    [
+     "Refraction mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Caustics",
+   "extra_inputs": [
+    "Intensity mod",
+    "Refraction mod"
+   ]
+  },
+  "Node_Grayscale_Curvature": {
+   "inputs": [
+    [
+     "Input",
+     "Grayscale"
+    ],
+    [
+     "Background",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Curvature"
+  },
+  "Node_Grayscale_Curve": {
+   "inputs": [
+    [
+     "Input",
+     "Grayscale"
+    ],
+    [
+     "Background",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Curve"
+  },
+  "Node_Grayscale_Dilate": {
+   "inputs": [
+    [
+     "Input",
+     "Grayscale"
+    ],
+    [
+     "UV",
+     "UV"
+    ],
+    [
+     "Background",
+     "Grayscale"
+    ],
+    [
+     "UV mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Dilate",
+   "extra_inputs": [
+    "UV mod"
+   ]
+  },
+  "Node_Grayscale_Filter": {
+   "inputs": [
+    [
+     "Input",
+     "Grayscale"
+    ],
+    [
+     "Background",
+     "Grayscale"
+    ],
+    [
+     "Radius modulation",
+     "Grayscale"
+    ],
+    [
+     "Intensity modulation",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Grayscale Filter",
+   "extra_inputs": [
+    "Radius modulation",
+    "Intensity modulation"
+   ]
+  },
+  "Node_Grayscale_Flood_Fill": {
+   "inputs": [
+    [
+     "Input",
+     "Grayscale"
+    ],
+    [
+     "Initial",
+     "Grayscale"
+    ],
+    [
+     "Weight",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Flood Fill"
+  },
+  "Node_Grayscale_Fractal": {
+   "inputs": [
+    [
+     "Input Pattern",
+     "Grayscale"
+    ],
+    [
+     "UV",
+     "UV"
+    ],
+    [
+     "Background",
+     "Grayscale"
+    ],
+    [
+     "Scale mod",
+     "Grayscale"
+    ],
+    [
+     "UV mod",
+     "Grayscale"
+    ],
+    [
+     "Roughness mod",
+     "Grayscale"
+    ],
+    [
+     "Blending ramp mod",
+     "Grayscale"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ],
+    [
+     "Visibility mod",
+     "Grayscale"
+    ],
+    [
+     "Atlas mod",
+     "Grayscale"
+    ],
+    [
+     "Z position mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Fractal",
+   "extra_inputs": [
+    "Scale mod",
+    "UV mod",
+    "Roughness mod",
+    "Blending ramp mod",
+    "Intensity mod",
+    "Visibility mod",
+    "Atlas mod",
+    "Z position mod"
+   ]
+  },
+  "Node_Grayscale_Frequency_Splitter": {
+   "inputs": [
+    [
+     "Input",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Low",
+     "Grayscale"
+    ],
+    [
+     "High",
+     "Grayscale"
+    ]
+   ],
+   "label": "Frequency Splitter"
+  },
+  "Node_Grayscale_Gradient": {
+   "inputs": [
+    [
+     "UV",
+     "UV"
+    ],
+    [
+     "Background",
+     "Grayscale"
+    ],
+    [
+     "UV mod",
+     "Grayscale"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Gradient",
+   "extra_inputs": [
+    "UV mod",
+    "Intensity mod"
+   ]
+  },
+  "Node_Grayscale_Noise": {
+   "inputs": [
+    [
+     "UV",
+     "UV"
+    ],
+    [
+     "Background",
+     "Grayscale"
+    ],
+    [
+     "Intensity modulation",
+     "Grayscale"
+    ],
+    [
+     "UV mod",
+     "Grayscale"
+    ],
+    [
+     "Roughness modulation",
+     "Grayscale"
+    ],
+    [
+     "Blending ramp modulation",
+     "Grayscale"
+    ],
+    [
+     "Z position modulation",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Noise",
+   "extra_inputs": [
+    "Intensity modulation",
+    "UV mod",
+    "Roughness modulation",
+    "Blending ramp modulation",
+    "Z position modulation"
+   ]
+  },
+  "Node_Grayscale_Polar_Scatter": {
+   "inputs": [
+    [
+     "Input Pattern",
+     "Grayscale"
+    ],
+    [
+     "Background",
+     "Grayscale"
+    ],
+    [
+     "Scale modulation",
+     "Grayscale"
+    ],
+    [
+     "Intensity modulation",
+     "Grayscale"
+    ],
+    [
+     "Visibility modulation",
+     "Grayscale"
+    ],
+    [
+     "Atlas modulation",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Polar Scatter",
+   "extra_inputs": [
+    "Scale modulation",
+    "Intensity modulation",
+    "Visibility modulation",
+    "Atlas modulation"
+   ]
+  },
+  "Node_Grayscale_Shape": {
+   "inputs": [
+    [
+     "UV",
+     "UV"
+    ],
+    [
+     "Background",
+     "Grayscale"
+    ],
+    [
+     "UV mod",
+     "Grayscale"
+    ],
+    [
+     "Scale mod",
+     "Grayscale"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Shape",
+   "extra_inputs": [
+    "UV mod",
+    "Scale mod",
+    "Intensity mod"
+   ]
+  },
+  "Node_Grayscale_Slice": {
+   "inputs": [
+    [
+     "Input",
+     "Grayscale"
+    ],
+    [
+     "Background",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Extract Slice"
+  },
+  "Node_Grayscale_Spline": {
+   "inputs": [
+    [
+     "UV",
+     "UV"
+    ],
+    [
+     "Background",
+     "Grayscale"
+    ],
+    [
+     "UV mod",
+     "Grayscale"
+    ],
+    [
+     "Intensity modulation",
+     "Grayscale"
+    ],
+    [
+     "Range modulation",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Spline",
+   "extra_inputs": [
+    "UV mod",
+    "Intensity modulation",
+    "Range modulation"
+   ]
+  },
+  "Node_Grayscale_Text": {
+   "inputs": [
+    [
+     "Background",
+     "Grayscale"
+    ],
+    [
+     "Points",
+     "GeometryBuffer"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Text",
+   "extra_inputs": [
+    "Intensity mod"
+   ]
+  },
+  "Node_Grayscale_Threshold": {
+   "inputs": [
+    [
+     "Input",
+     "Grayscale"
+    ],
+    [
+     "Background",
+     "Grayscale"
+    ],
+    [
+     "Threshold mod",
+     "Grayscale"
+    ],
+    [
+     "Smoothness mod",
+     "Grayscale"
+    ],
+    [
+     "Range mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Threshold",
+   "extra_inputs": [
+    "Threshold mod",
+    "Smoothness mod",
+    "Range mod"
+   ]
+  },
+  "Node_Grayscale_Tiler": {
+   "inputs": [
+    [
+     "Brush",
+     "Grayscale"
+    ],
+    [
+     "Brush Mask",
+     "Grayscale"
+    ],
+    [
+     "Layout",
+     "Grayscale"
+    ],
+    [
+     "UV",
+     "UV"
+    ],
+    [
+     "Scale mod",
+     "Grayscale"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ],
+    [
+     "Visibility mod",
+     "Grayscale"
+    ],
+    [
+     "Atlas mod",
+     "Grayscale"
+    ],
+    [
+     "Rotation mod",
+     "Grayscale"
+    ],
+    [
+     "Z position mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ],
+    [
+     "Islands",
+     "Islands"
+    ],
+    [
+     "Mask",
+     "Grayscale"
+    ]
+   ],
+   "label": "Tiler",
+   "extra_inputs": [
+    "Scale mod",
+    "Intensity mod",
+    "Visibility mod",
+    "Atlas mod",
+    "Rotation mod",
+    "Z position mod"
+   ]
+  },
+  "Node_Grayscale_Uniform": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Uniform"
+  },
+  "Node_Grayscale_XDoG": {
+   "inputs": [
+    [
+     "Input",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Grayscale XDoG"
+  },
+  "Node_Import_Model": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ],
+    [
+     "Out Color",
+     "Color"
+    ],
+    [
+     "Out Mask",
+     "Grayscale"
+    ],
+    [
+     "Out UV",
+     "UV"
+    ]
+   ],
+   "label": "Import: Model"
+  },
+  "Node_Import_Skybox": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Output",
+     "Environment"
+    ]
+   ],
+   "label": "Import: Skybox"
+  },
+  "Node_Import_Texture": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Output",
+     "Color"
+    ],
+    [
+     "Grayscale R",
+     "Grayscale"
+    ],
+    [
+     "Grayscale G",
+     "Grayscale"
+    ],
+    [
+     "Grayscale B",
+     "Grayscale"
+    ],
+    [
+     "Grayscale A",
+     "Grayscale"
+    ],
+    [
+     "Output Next",
+     "Color"
+    ],
+    [
+     "Grayscale R Next",
+     "Grayscale"
+    ],
+    [
+     "Grayscale G Next",
+     "Grayscale"
+    ],
+    [
+     "Grayscale B Next",
+     "Grayscale"
+    ],
+    [
+     "Grayscale A Next",
+     "Grayscale"
+    ]
+   ],
+   "label": "Import: Texture"
+  },
+  "Node_Islands_Generate": {
+   "inputs": [
+    [
+     "Input",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Islands",
+     "Islands"
+    ]
+   ],
+   "label": "Islands"
+  },
+  "Node_Islands_Grid": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Edges",
+     "Grayscale"
+    ],
+    [
+     "Islands",
+     "Islands"
+    ]
+   ],
+   "label": "Grid"
+  },
+  "Node_Islands_Padding": {
+   "inputs": [
+    [
+     "Input",
+     "Islands"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Islands"
+    ]
+   ],
+   "label": "Islands Padding"
+  },
+  "Node_Islands_To_Color": {
+   "inputs": [
+    [
+     "Input",
+     "Islands"
+    ],
+    [
+     "Color",
+     "Color"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Color"
+    ]
+   ],
+   "label": "Islands to Color",
+   "extra_inputs": [
+    "Color"
+   ]
+  },
+  "Node_Islands_To_Gradient": {
+   "inputs": [
+    [
+     "Input",
+     "Islands"
+    ],
+    [
+     "Slope",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Islands to Gradient"
+  },
+  "Node_Islands_To_Grayscale": {
+   "inputs": [
+    [
+     "Input",
+     "Islands"
+    ],
+    [
+     "Grayscale",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ]
+   ],
+   "label": "Islands to Grayscale",
+   "extra_inputs": [
+    "Grayscale"
+   ]
+  },
+  "Node_Islands_To_UV": {
+   "inputs": [
+    [
+     "Input",
+     "Islands"
+    ]
+   ],
+   "outputs": [
+    [
+     "UV",
+     "UV"
+    ]
+   ],
+   "label": "Islands to UV"
+  },
+  "Node_Normal_Combine": {
+   "inputs": [
+    [
+     "Normal A",
+     "Normal"
+    ],
+    [
+     "Normal B",
+     "Normal"
+    ]
+   ],
+   "outputs": [
+    [
+     "Normal",
+     "Normal"
+    ]
+   ],
+   "label": "Normal Combine"
+  },
+  "Node_Normal_Create": {
+   "inputs": [
+    [
+     "Grayscale input",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Normal",
+     "Normal"
+    ]
+   ],
+   "label": "Normal Create"
+  },
+  "Node_Particle_2D_Render": {
+   "inputs": [
+    [
+     "Points",
+     "GeometryBuffer"
+    ],
+    [
+     "Input",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Particle 2D Render",
+   "polymorphic": true
+  },
+  "Node_Renderer": {
+   "inputs": [
+    [
+     "Albedo",
+     "Color"
+    ],
+    [
+     "Normal",
+     "Normal"
+    ],
+    [
+     "Roughness",
+     "Grayscale"
+    ],
+    [
+     "Metalness",
+     "Grayscale"
+    ],
+    [
+     "Ambient Occlusion",
+     "Grayscale"
+    ],
+    [
+     "Emissive",
+     "Color"
+    ],
+    [
+     "Alpha",
+     "Grayscale"
+    ],
+    [
+     "Opacity Mask",
+     "Grayscale"
+    ],
+    [
+     "Geometry",
+     "GeometryBuffer"
+    ],
+    [
+     "Skybox",
+     "Environment"
+    ],
+    [
+     "Dirt lens",
+     "Color"
+    ],
+    [
+     "Dirt lens normal",
+     "Normal"
+    ]
+   ],
+   "outputs": [
+    [
+     "Viewport",
+     "RenderHDR"
+    ]
+   ],
+   "label": "Renderer"
+  },
+  "Node_UV_Blend": {
+   "inputs": [
+    [
+     "Foreground",
+     "UV"
+    ],
+    [
+     "Background",
+     "UV"
+    ],
+    [
+     "Weight",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "UV",
+     "UV"
+    ]
+   ],
+   "label": "Blend UV"
+  },
+  "Node_UV_Blur": {
+   "inputs": [
+    [
+     "UV",
+     "UV"
+    ],
+    [
+     "Mask",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "UV",
+     "UV"
+    ]
+   ],
+   "label": "UV Blur"
+  },
+  "Node_UV_Cartesian_To_Polar": {
+   "inputs": [
+    [
+     "In UV",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "Out UV",
+     "UV"
+    ]
+   ],
+   "label": "UV Polar"
+  },
+  "Node_UV_Directional": {
+   "inputs": [
+    [
+     "In UV",
+     "UV"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ],
+    [
+     "Chaos mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Out UV",
+     "UV"
+    ]
+   ],
+   "label": "UV Directional",
+   "extra_inputs": [
+    "Intensity mod",
+    "Chaos mod"
+   ]
+  },
+  "Node_UV_Flow": {
+   "inputs": [
+    [
+     "Colliders",
+     "Grayscale"
+    ],
+    [
+     "UV injection",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "Out UV",
+     "UV"
+    ],
+    [
+     "Vorticity",
+     "Grayscale"
+    ]
+   ],
+   "label": "UV Flow"
+  },
+  "Node_UV_From_Grayscale": {
+   "inputs": [
+    [
+     "Grayscale input",
+     "Grayscale"
+    ],
+    [
+     "Rotation mod",
+     "Grayscale"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Out UV",
+     "UV"
+    ]
+   ],
+   "label": "UV from Derivative",
+   "extra_inputs": [
+    "Rotation mod",
+    "Intensity mod"
+   ]
+  },
+  "Node_UV_Identity": {
+   "inputs": [
+    [
+     "In UV",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "Out UV",
+     "UV"
+    ]
+   ],
+   "label": "UV Identity"
+  },
+  "Node_UV_Noise": {
+   "inputs": [
+    [
+     "In UV",
+     "UV"
+    ],
+    [
+     "Intensity modulation",
+     "Grayscale"
+    ],
+    [
+     "Roughness modulation",
+     "Grayscale"
+    ],
+    [
+     "Rotation modulation",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Out UV",
+     "UV"
+    ]
+   ],
+   "label": "UV Noise",
+   "extra_inputs": [
+    "Intensity modulation",
+    "Roughness modulation",
+    "Rotation modulation"
+   ]
+  },
+  "Node_UV_Radial": {
+   "inputs": [
+    [
+     "In UV",
+     "UV"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ],
+    [
+     "Chaos mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Out UV",
+     "UV"
+    ]
+   ],
+   "label": "UV Radial",
+   "extra_inputs": [
+    "Intensity mod",
+    "Chaos mod"
+   ]
+  },
+  "Node_UV_Rotational": {
+   "inputs": [
+    [
+     "In UV",
+     "UV"
+    ],
+    [
+     "Rotation mod",
+     "Grayscale"
+    ],
+    [
+     "Chaos mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Out UV",
+     "UV"
+    ]
+   ],
+   "label": "UV Rotational",
+   "extra_inputs": [
+    "Rotation mod",
+    "Chaos mod"
+   ]
+  },
+  "Node_UV_Transform": {
+   "inputs": [
+    [
+     "In UV",
+     "UV"
+    ],
+    [
+     "Rotation mod",
+     "Grayscale"
+    ],
+    [
+     "Scale mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Out UV",
+     "UV"
+    ]
+   ],
+   "label": "UV Transform",
+   "extra_inputs": [
+    "Rotation mod",
+    "Scale mod"
+   ]
+  },
+  "Node_Utils_Accumulate": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Accumulate",
+   "polymorphic": true
+  },
+  "Node_Utils_Advect": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "UV",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Advect",
+   "polymorphic": true
+  },
+  "Node_Utils_Alpha_Merge": {
+   "inputs": [
+    [
+     "RGB",
+     "Color"
+    ],
+    [
+     "Alpha",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "RGBA Color",
+     "Color"
+    ]
+   ],
+   "label": "Alpha Merge"
+  },
+  "Node_Utils_Alpha_Split": {
+   "inputs": [
+    [
+     "RGBA Color",
+     "Color"
+    ]
+   ],
+   "outputs": [
+    [
+     "RGB",
+     "Color"
+    ],
+    [
+     "Alpha",
+     "Grayscale"
+    ]
+   ],
+   "label": "Alpha Split"
+  },
+  "Node_Utils_Anisotropic_Kuwahara": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "Radius mod",
+     "Grayscale"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Anisotropic Kuwahara",
+   "extra_inputs": [
+    "Radius mod",
+    "Intensity mod"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_Auto_Crop": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Auto Crop",
+   "polymorphic": true
+  },
+  "Node_Utils_Bilateral_Filter": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "Space mod",
+     "Grayscale"
+    ],
+    [
+     "Color mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Bilateral Filter",
+   "extra_inputs": [
+    "Space mod",
+    "Color mod"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_Blend": {
+   "inputs": [
+    [
+     "Background",
+     "Inherit"
+    ],
+    [
+     "Foreground",
+     "Inherit"
+    ],
+    [
+     "Weight",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ],
+    [
+     "Mask",
+     "Grayscale"
+    ]
+   ],
+   "label": "Blend",
+   "polymorphic": true
+  },
+  "Node_Utils_Blend_Flow": {
+   "inputs": [
+    [
+     "From",
+     "Inherit"
+    ],
+    [
+     "To",
+     "Inherit"
+    ],
+    [
+     "Flow",
+     "UV"
+    ],
+    [
+     "Inverse Flow",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Blend Flow",
+   "extra_inputs": [
+    "Inverse Flow"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_Blur": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "Radius mod",
+     "Grayscale"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Blur",
+   "extra_inputs": [
+    "Radius mod",
+    "Intensity mod"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_Bokeh_Blur": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "Shape mask",
+     "Grayscale"
+    ],
+    [
+     "Radius mod",
+     "Grayscale"
+    ],
+    [
+     "Rotation mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Bokeh Blur",
+   "extra_inputs": [
+    "Radius mod",
+    "Rotation mod"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_Cartesian_To_Polar": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Cartesian to Polar",
+   "polymorphic": true
+  },
+  "Node_Utils_Color_To_Normal": {
+   "inputs": [
+    [
+     "Color",
+     "Color"
+    ]
+   ],
+   "outputs": [
+    [
+     "Normal",
+     "Normal"
+    ]
+   ],
+   "label": "Color to Normal"
+  },
+  "Node_Utils_Color_To_UV": {
+   "inputs": [
+    [
+     "Color",
+     "Color"
+    ]
+   ],
+   "outputs": [
+    [
+     "UV",
+     "UV"
+    ]
+   ],
+   "label": "Color to UV"
+  },
+  "Node_Utils_Contrast_Luminosity": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "Contrast mod",
+     "Grayscale"
+    ],
+    [
+     "Luminosity mod",
+     "Grayscale"
+    ],
+    [
+     "Mid value mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Contrast Luminosity",
+   "extra_inputs": [
+    "Contrast mod",
+    "Luminosity mod",
+    "Mid value mod"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_Copy_And_Transform": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "Rotation mod",
+     "Grayscale"
+    ],
+    [
+     "Scale mod",
+     "Grayscale"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ],
+    [
+     "Hue mod",
+     "Grayscale"
+    ],
+    [
+     "Saturation mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Copy and Transform",
+   "extra_inputs": [
+    "Rotation mod",
+    "Scale mod",
+    "Intensity mod",
+    "Hue mod",
+    "Saturation mod"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_Denoise": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "Sigma mod",
+     "Grayscale"
+    ],
+    [
+     "Threshold mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Denoise",
+   "extra_inputs": [
+    "Sigma mod",
+    "Threshold mod"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_Directional_Blur": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "UV",
+     "UV"
+    ],
+    [
+     "Distance mod",
+     "Grayscale"
+    ],
+    [
+     "Chroma mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Directional Blur",
+   "extra_inputs": [
+    "Distance mod",
+    "Chroma mod"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_Distance": {
+   "inputs": [
+    [
+     "Input",
+     "Grayscale"
+    ],
+    [
+     "Sample input",
+     "Inherit"
+    ],
+    [
+     "UV",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Grayscale"
+    ],
+    [
+     "Sample output",
+     "Inherit"
+    ]
+   ],
+   "label": "Distance",
+   "polymorphic": true
+  },
+  "Node_Utils_Edge_Detect": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "Sharpness mod",
+     "Grayscale"
+    ],
+    [
+     "Center mod",
+     "Grayscale"
+    ],
+    [
+     "Radius mod",
+     "Grayscale"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Edge Detect",
+   "extra_inputs": [
+    "Sharpness mod",
+    "Center mod",
+    "Radius mod",
+    "Intensity mod"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_Equalize": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Equalize",
+   "polymorphic": true
+  },
+  "Node_Utils_FXAA": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "FXAA",
+   "polymorphic": true
+  },
+  "Node_Utils_Glow": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "Radius mod",
+     "Grayscale"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Glow",
+   "extra_inputs": [
+    "Radius mod",
+    "Intensity mod"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_HSVA_to_RGBA": {
+   "inputs": [
+    [
+     "Hue",
+     "Grayscale"
+    ],
+    [
+     "Saturation",
+     "Grayscale"
+    ],
+    [
+     "Value",
+     "Grayscale"
+    ],
+    [
+     "Alpha",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "RGBA Color",
+     "Color"
+    ]
+   ],
+   "label": "HSVA to RGBA"
+  },
+  "Node_Utils_Lattice": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "Background",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Lattice Warp",
+   "polymorphic": true
+  },
+  "Node_Utils_Levels": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "In Low mod",
+     "Grayscale"
+    ],
+    [
+     "In Mid mod",
+     "Grayscale"
+    ],
+    [
+     "In High mod",
+     "Grayscale"
+    ],
+    [
+     "Out Low mod",
+     "Grayscale"
+    ],
+    [
+     "Out High mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Levels",
+   "extra_inputs": [
+    "In Low mod",
+    "In Mid mod",
+    "In High mod",
+    "Out Low mod",
+    "Out High mod"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_Looper": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Looper",
+   "polymorphic": true
+  },
+  "Node_Utils_Material": {
+   "inputs": [
+    [
+     "Image",
+     "Color"
+    ]
+   ],
+   "outputs": [
+    [
+     "Albedo",
+     "Color"
+    ],
+    [
+     "Height",
+     "Grayscale"
+    ],
+    [
+     "Roughness",
+     "Grayscale"
+    ]
+   ],
+   "label": "Image to Material"
+  },
+  "Node_Utils_Multi_Blend": {
+   "inputs": [
+    [
+     "Input 1",
+     "Inherit"
+    ],
+    [
+     "Input 2",
+     "Inherit"
+    ],
+    [
+     "Input 3",
+     "Inherit"
+    ],
+    [
+     "Input 4",
+     "Inherit"
+    ],
+    [
+     "Input 5",
+     "Inherit"
+    ],
+    [
+     "Input 6",
+     "Inherit"
+    ],
+    [
+     "Input 7",
+     "Inherit"
+    ],
+    [
+     "Input 8",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Multi Blend",
+   "extra_inputs": [
+    "Input 2",
+    "Input 3",
+    "Input 4",
+    "Input 5",
+    "Input 6",
+    "Input 7",
+    "Input 8"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_Multi_Pack": {
+   "inputs": [
+    [
+     "Input 1",
+     "Inherit"
+    ],
+    [
+     "Input 2",
+     "Inherit"
+    ],
+    [
+     "Input 3",
+     "Inherit"
+    ],
+    [
+     "Input 4",
+     "Inherit"
+    ],
+    [
+     "Input 5",
+     "Inherit"
+    ],
+    [
+     "Input 6",
+     "Inherit"
+    ],
+    [
+     "Input 7",
+     "Inherit"
+    ],
+    [
+     "Input 8",
+     "Inherit"
+    ],
+    [
+     "Input 9",
+     "Inherit"
+    ],
+    [
+     "Input 10",
+     "Inherit"
+    ],
+    [
+     "Input 11",
+     "Inherit"
+    ],
+    [
+     "Input 12",
+     "Inherit"
+    ],
+    [
+     "Input 13",
+     "Inherit"
+    ],
+    [
+     "Input 14",
+     "Inherit"
+    ],
+    [
+     "Input 15",
+     "Inherit"
+    ],
+    [
+     "Input 16",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Multi Pack",
+   "extra_inputs": [
+    "Input 2",
+    "Input 3",
+    "Input 4",
+    "Input 5",
+    "Input 6",
+    "Input 7",
+    "Input 8",
+    "Input 9",
+    "Input 10",
+    "Input 11",
+    "Input 12",
+    "Input 13",
+    "Input 14",
+    "Input 15",
+    "Input 16"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_Multi_Switch": {
+   "inputs": [
+    [
+     "Input 1",
+     "Inherit"
+    ],
+    [
+     "Input 2",
+     "Inherit"
+    ],
+    [
+     "Input 3",
+     "Inherit"
+    ],
+    [
+     "Input 4",
+     "Inherit"
+    ],
+    [
+     "Input 5",
+     "Inherit"
+    ],
+    [
+     "Input 6",
+     "Inherit"
+    ],
+    [
+     "Input 7",
+     "Inherit"
+    ],
+    [
+     "Input 8",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Multi Switch",
+   "extra_inputs": [
+    "Input 2",
+    "Input 3",
+    "Input 4",
+    "Input 5",
+    "Input 6",
+    "Input 7",
+    "Input 8"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_Normal_Merge": {
+   "inputs": [
+    [
+     "X",
+     "Grayscale"
+    ],
+    [
+     "Y",
+     "Grayscale"
+    ],
+    [
+     "Z",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Normal",
+     "Normal"
+    ]
+   ],
+   "label": "Normal Merge"
+  },
+  "Node_Utils_Normal_Split": {
+   "inputs": [
+    [
+     "Normal",
+     "Normal"
+    ]
+   ],
+   "outputs": [
+    [
+     "X",
+     "Grayscale"
+    ],
+    [
+     "Y",
+     "Grayscale"
+    ],
+    [
+     "Z",
+     "Grayscale"
+    ]
+   ],
+   "label": "Normal Split"
+  },
+  "Node_Utils_Normal_To_Color": {
+   "inputs": [
+    [
+     "Normal",
+     "Normal"
+    ]
+   ],
+   "outputs": [
+    [
+     "Color",
+     "Color"
+    ]
+   ],
+   "label": "Normal to Color"
+  },
+  "Node_Utils_Optical_Flow": {
+   "inputs": [
+    [
+     "From",
+     "Inherit"
+    ],
+    [
+     "To",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Flow",
+     "UV"
+    ],
+    [
+     "Inverse Flow",
+     "UV"
+    ]
+   ],
+   "label": "Optical Flow",
+   "polymorphic": true
+  },
+  "Node_Utils_Pixelizer": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "Dither pattern",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Pixelizer",
+   "polymorphic": true
+  },
+  "Node_Utils_Polar_To_Cartesian": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Polar to Cartesian",
+   "polymorphic": true
+  },
+  "Node_Utils_RGBA_Merge": {
+   "inputs": [
+    [
+     "Red",
+     "Grayscale"
+    ],
+    [
+     "Green",
+     "Grayscale"
+    ],
+    [
+     "Blue",
+     "Grayscale"
+    ],
+    [
+     "Alpha",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "RGBA Color",
+     "Color"
+    ]
+   ],
+   "label": "RGBA Merge"
+  },
+  "Node_Utils_RGBA_Split": {
+   "inputs": [
+    [
+     "RGBA Color",
+     "Color"
+    ]
+   ],
+   "outputs": [
+    [
+     "Red",
+     "Grayscale"
+    ],
+    [
+     "Green",
+     "Grayscale"
+    ],
+    [
+     "Blue",
+     "Grayscale"
+    ],
+    [
+     "Alpha",
+     "Grayscale"
+    ]
+   ],
+   "label": "RGBA Split"
+  },
+  "Node_Utils_RGBA_to_HSVA": {
+   "inputs": [
+    [
+     "RGBA Color",
+     "Color"
+    ]
+   ],
+   "outputs": [
+    [
+     "Hue",
+     "Grayscale"
+    ],
+    [
+     "Saturation",
+     "Grayscale"
+    ],
+    [
+     "Value",
+     "Grayscale"
+    ],
+    [
+     "Alpha",
+     "Grayscale"
+    ]
+   ],
+   "label": "RGBA to HSVA"
+  },
+  "Node_Utils_RGB_To_Grayscale": {
+   "inputs": [
+    [
+     "RGB Color",
+     "Color"
+    ]
+   ],
+   "outputs": [
+    [
+     "Grayscale",
+     "Grayscale"
+    ]
+   ],
+   "label": "RGB to Grayscale"
+  },
+  "Node_Utils_Sheet_Decode": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "Input Motion",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ],
+    [
+     "Output Next",
+     "Inherit"
+    ],
+    [
+     "Output Motion",
+     "UV"
+    ]
+   ],
+   "label": "Sheet Decode",
+   "polymorphic": true
+  },
+  "Node_Utils_Sheet_Encode": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Sheet Encode",
+   "polymorphic": true
+  },
+  "Node_Utils_Slope_Blur": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "Slope",
+     "Grayscale"
+    ],
+    [
+     "Intensity mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Slope Blur",
+   "extra_inputs": [
+    "Intensity mod"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_SoftBlend": {
+   "inputs": [
+    [
+     "Background",
+     "Inherit"
+    ],
+    [
+     "Foreground",
+     "Inherit"
+    ],
+    [
+     "Weight",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Soft Blend",
+   "polymorphic": true
+  },
+  "Node_Utils_Stylization": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ],
+    [
+     "Edge Mask",
+     "Grayscale"
+    ],
+    [
+     "Flow UV",
+     "UV"
+    ]
+   ],
+   "label": "Flow Stylization",
+   "polymorphic": true
+  },
+  "Node_Utils_Tileable": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Tile",
+   "polymorphic": true
+  },
+  "Node_Utils_Transform": {
+   "inputs": [
+    [
+     "Input",
+     "Inherit"
+    ],
+    [
+     "UV",
+     "UV"
+    ],
+    [
+     "UV mod",
+     "Grayscale"
+    ],
+    [
+     "Rotation mod",
+     "Grayscale"
+    ],
+    [
+     "Scale mod",
+     "Grayscale"
+    ],
+    [
+     "Position mod",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Inherit"
+    ]
+   ],
+   "label": "Transform",
+   "extra_inputs": [
+    "UV mod",
+    "Rotation mod",
+    "Scale mod",
+    "Position mod"
+   ],
+   "polymorphic": true
+  },
+  "Node_Utils_UV_Merge": {
+   "inputs": [
+    [
+     "X",
+     "Grayscale"
+    ],
+    [
+     "Y",
+     "Grayscale"
+    ]
+   ],
+   "outputs": [
+    [
+     "UV",
+     "UV"
+    ]
+   ],
+   "label": "UV Merge"
+  },
+  "Node_Utils_UV_Split": {
+   "inputs": [
+    [
+     "UV",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "X",
+     "Grayscale"
+    ],
+    [
+     "Y",
+     "Grayscale"
+    ]
+   ],
+   "label": "UV Split"
+  },
+  "Node_Utils_UV_To_Color": {
+   "inputs": [
+    [
+     "UV",
+     "UV"
+    ]
+   ],
+   "outputs": [
+    [
+     "Color",
+     "Color"
+    ]
+   ],
+   "label": "UV to Color"
+  },
+  "Node_Adsr": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Signal",
+     "Signal"
+    ]
+   ],
+   "label": "Mod: ADSR"
+  },
+  "Node_Combine": {
+   "inputs": [
+    [
+     "Signal A",
+     "Signal"
+    ],
+    [
+     "Signal B",
+     "Signal"
+    ]
+   ],
+   "outputs": [
+    [
+     "Signal",
+     "Signal"
+    ]
+   ],
+   "label": "Mod: Combine"
+  },
+  "Node_Constant": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Signal",
+     "Signal"
+    ]
+   ],
+   "label": "Mod: Constant"
+  },
+  "Node_Cycle": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Signal",
+     "Signal"
+    ]
+   ],
+   "label": "Mod: Cycle"
+  },
+  "Node_Ease": {
+   "inputs": [
+    [
+     "Signal",
+     "Signal"
+    ]
+   ],
+   "outputs": [
+    [
+     "Signal",
+     "Signal"
+    ]
+   ],
+   "label": "Mod: Ease"
+  },
+  "Node_Input": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Output",
+     "Any"
+    ]
+   ],
+   "label": "Input",
+   "polymorphic": true
+  },
+  "Node_Math": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Signal",
+     "Signal"
+    ]
+   ],
+   "label": "Mod: Math"
+  },
+  "Node_Midi": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Signal",
+     "Signal"
+    ]
+   ],
+   "label": "Mod: MIDI"
+  },
+  "Node_Oscillator": {
+   "inputs": [],
+   "outputs": [
+    [
+     "Signal",
+     "Signal"
+    ]
+   ],
+   "label": "Mod: Oscillator"
+  },
+  "Node_Output": {
+   "inputs": [
+    [
+     "Input",
+     "Any"
+    ]
+   ],
+   "outputs": [],
+   "label": "Output",
+   "polymorphic": true
+  },
+  "Node_Receive": {
+   "inputs": [
+    [
+     "Input",
+     "Any"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Any"
+    ]
+   ],
+   "label": "Receive",
+   "polymorphic": true
+  },
+  "Node_Reroute": {
+   "inputs": [
+    [
+     "Input",
+     "Any"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Any"
+    ]
+   ],
+   "label": "Reroute",
+   "polymorphic": true
+  },
+  "Node_Send": {
+   "inputs": [
+    [
+     "Input",
+     "Any"
+    ]
+   ],
+   "outputs": [
+    [
+     "Output",
+     "Any"
+    ]
+   ],
+   "label": "Send",
+   "polymorphic": true
+  },
+  "Node_Subgraph": {
+   "inputs": [],
+   "outputs": [],
+   "label": "Subgraph",
+   "polymorphic": true,
+   "note": "pins are dynamic (created from inner Input/Output nodes); static info has none"
+  },
+  "Node_Time_Shift": {
+   "inputs": [
+    [
+     "Signal",
+     "Signal"
+    ]
+   ],
+   "outputs": [
+    [
+     "Signal",
+     "Signal"
+    ]
+   ],
+   "label": "Mod: Time Shift"
+  }
+ }
+}

@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+
+# test outputs
+tests/work*/
+
+# local IlluGen projects and renders
+*.illugen.bak
+*.mcp_render_*.illugen
