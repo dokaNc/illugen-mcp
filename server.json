@@ -8,13 +8,13 @@
     "source": "github"
   },
   "websiteUrl": "https://github.com/dokaNc/illugen-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "packages": [
     {
       "registryType": "mcpb",
-      "identifier": "https://github.com/dokaNc/illugen-mcp/releases/download/v0.1.0/illugen-mcp-0.1.0.mcpb",
-      "version": "0.1.0",
-      "fileSha256": "1339f4f9ce07646ffb5fea8ce5a886380bfc61b151afe6842dd7db5ddb968bf0",
+      "identifier": "https://github.com/dokaNc/illugen-mcp/releases/download/v0.1.1/illugen-mcp-0.1.1.mcpb",
+      "version": "0.1.1",
+      "fileSha256": "c3f05551aa69b9c0f47e9831c65f2fe85178030776efc3d3b145aafcc5247c2c",
       "transport": {
         "type": "stdio"
       },

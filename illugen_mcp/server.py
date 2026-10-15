@@ -11,8 +11,11 @@ import os
 import shutil
 import time
 from pathlib import Path
+from typing import Annotated, Any, Literal
 
 from mcp.server.fastmcp import FastMCP, Image
+from mcp.types import ToolAnnotations
+from pydantic import Field
 
 from .paths import DEFAULT_EXE
 from .project import Project, ProjectError, catalog, node_types, param_info, pin_table, resolve_type
@@ -26,6 +29,22 @@ mcp = FastMCP("illugen", instructions=(
     "IlluGen instance, so a GUI IlluGen may stay open. If a tool fails, read its error and any attached screenshot: "
     "most failures are graph problems (pin types, missing export node) that node_get / describe_node_type explain."
 ))
+
+# ---------------------------------------------------------------- shared argument types and tool hints
+
+ProjectPath = Annotated[str, Field(description="Absolute path of the .illugen project file.")]
+GraphScope = Annotated[str, Field(description=(
+    "Graph to work in: empty for the top-level graph, or the id or label of a Node_Subgraph node "
+    "('outer/inner' for nested subgraphs)."))]
+NodeRef = Annotated[str, Field(description=(
+    "Node id as a string (from project_summary or node_add), or the node's label if it is unique."))]
+
+# offline tools only read or write the given project file; engine tools start a private IlluGen process
+READ_ONLY = ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False)
+EDIT = ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=True, openWorldHint=False)
+ADD = ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False)
+DELETE = ToolAnnotations(readOnlyHint=False, destructiveHint=True, idempotentHint=False, openWorldHint=False)
+REPLACE = ToolAnnotations(readOnlyHint=False, destructiveHint=True, idempotentHint=True, openWorldHint=False)
 
 
 def _abs(path: str) -> Path:
@@ -56,9 +75,16 @@ def _preview_image(png_path: Path, max_side: int = 768) -> Image:
 
 # ---------------------------------------------------------------- discovery
 
-@mcp.tool()
+@mcp.tool(title="IlluGen status", annotations=READ_ONLY)
 def illugen_status() -> dict:
-    """Installation, running instances and catalog info."""
+    """Reports whether IlluGen is installed and which node catalog this server uses.
+
+    Call it first when an engine tool (project_render, project_validate with engine=true, project_screenshot,
+    project_normalize) fails, or to find the folder of the shipped presets. Takes no arguments, does not start
+    IlluGen and changes nothing.
+    Returns: exe (path used, set with the ILLUGEN_EXE variable), installed (bool), running_instances (IlluGen
+    processes currently open, GUI ones included), catalog_illugen_version and node_types (IlluGen version and
+    node count of the bundled catalog), presets_dir."""
     cat = catalog()
     return {
         "exe": str(DEFAULT_EXE), "installed": DEFAULT_EXE.exists(),
@@ -68,10 +94,20 @@ def illugen_status() -> dict:
     }
 
 
-@mcp.tool()
-def list_node_types(category: str = "", search: str = "") -> dict:
-    """Lists node types, grouped by category (Grayscale, Color, UV, Geometry, Utils, Islands, Export, Import...).
-    Optional filters: category (exact, case-insensitive) and search (substring of the type name)."""
+@mcp.tool(title="List node types", annotations=READ_ONLY)
+def list_node_types(
+    category: Annotated[str, Field(description=(
+        "Keep only this category (exact name, case-insensitive): Grayscale, Color, UV, Normal, Geometry, Utils, "
+        "Islands, Export, Import, Particle, Camera, Time or Misc. Empty = all categories."))] = "",
+    search: Annotated[str, Field(description=(
+        "Keep only type names containing this text (case-insensitive), e.g. 'noise'. Empty = no filter."))] = "",
+) -> dict:
+    """Lists the IlluGen node types this server can create, grouped by category.
+
+    Use it to find a type name for node_add, then describe_node_type for that type's parameters and pins.
+    Offline (IlluGen not needed) and read-only.
+    Returns {category: [type names]}, e.g. {"Grayscale": ["Node_Grayscale_Noise", ...]}; an empty object means
+    nothing matched the filters."""
     groups: dict[str, list[str]] = {}
     for t, info in sorted(node_types().items()):
         if category and info["category"].lower() != category.lower():
@@ -82,12 +118,21 @@ def list_node_types(category: str = "", search: str = "") -> dict:
     return groups
 
 
-@mcp.tool()
-def describe_node_type(node_type: str) -> dict:
-    """Parameters (kind, default, known enum values, UI bounds), curves and typed pins of a node type.
-    Pin kinds: Grayscale, Color, UV, Normal, Islands, GeometryBuffer...;
-    Inherit = takes the kind of what is connected; Signal = modulator. Parameters can also be driven
-    through exposed parameter pins (names like 'Scale', 'Seed' in inputs_seen)."""
+@mcp.tool(title="Describe node type", annotations=READ_ONLY)
+def describe_node_type(
+    node_type: Annotated[str, Field(description=(
+        "Node type name from list_node_types. Case, spaces and the 'Node_' prefix are optional, "
+        "e.g. 'grayscale noise' for Node_Grayscale_Noise."))],
+) -> dict:
+    """Describes one node type: its parameters, curves and typed input/output pins.
+
+    Call it before node_add or node_set to get valid parameter names, value kinds, defaults, enum values and UI
+    ranges, and before link_add to get pin names and the data kind each pin carries. Offline and read-only.
+    Pin kinds: Grayscale, Color, UV, Normal, Islands, GeometryBuffer...; 'Inherit' takes the kind of whatever is
+    connected; 'Signal' is a modulator (Oscillator, Cycle, Constant...).
+    Returns: type, category, params {name: {kind, default, values for enums, min/max, label, modulatable}},
+    curves, pins {inputs, outputs, optional_inputs} and parameter_pins {pin name: parameter it drives when a
+    Signal is linked to it, e.g. 'Scale', 'Seed'}. An unknown type fails with close-match suggestions."""
     t = resolve_type(node_type)
     info = node_types()[t]
     out = {"type": t, **{k: v for k, v in info.items() if k not in ("template", "params")}}
@@ -116,9 +161,17 @@ def describe_node_type(node_type: str) -> dict:
     return out
 
 
-@mcp.tool()
-def list_presets(search: str = "") -> list[dict]:
-    """IlluGen's shipped example projects (usable as starting points with project_new(from_preset=...))."""
+@mcp.tool(title="List presets", annotations=READ_ONLY)
+def list_presets(
+    search: Annotated[str, Field(description=(
+        "Keep only presets whose name contains this text (case-insensitive). Empty = all presets."))] = "",
+) -> list[dict]:
+    """Lists the example projects shipped with IlluGen, usable as starting points.
+
+    Pass a returned name to project_new(from_preset=...) to get an editable copy; the presets themselves are
+    never modified. Read-only; reads the presets folder of the installed IlluGen.
+    Returns [{name, path}], sorted by name. The list is empty when nothing matches or when IlluGen is not found
+    (check illugen_status)."""
     out = []
     for f in sorted((DEFAULT_EXE.parent / "presets_1_0_0").glob("*.illugen")):
         if search and search.lower() not in f.stem.lower():
@@ -129,10 +182,21 @@ def list_presets(search: str = "") -> list[dict]:
 
 # ---------------------------------------------------------------- project editing
 
-@mcp.tool()
-def project_new(path: str, from_preset: str = "", overwrite: bool = False) -> dict:
-    """Creates a project at `path` (.illugen). Empty by default, or a writable copy of a shipped preset
-    (name from list_presets, or a path to any .illugen file)."""
+@mcp.tool(title="New project", annotations=ADD)
+def project_new(
+    path: Annotated[str, Field(description=(
+        "Absolute path of the project to create; must end in .illugen. Missing folders are created."))],
+    from_preset: Annotated[str, Field(description=(
+        "Optional source to copy: a preset name from list_presets, or an absolute path to any .illugen file. "
+        "Empty = blank project."))] = "",
+    overwrite: Annotated[bool, Field(description=(
+        "Replace the file if it already exists (its previous content is lost). Default false: fail instead."))] = False,
+) -> dict:
+    """Creates a new .illugen project file, blank or copied from a preset or another project.
+
+    Start every new graph here, then add nodes with node_add. Writes only the file at `path`; the copied preset
+    or project is left untouched, and a copied preset is made editable.
+    Returns the new file's path plus its summary (same shape as project_summary)."""
     dest = _abs(path)
     if dest.exists() and not overwrite:
         raise ProjectError(f"{dest} exists (pass overwrite=true to replace it)")
@@ -151,36 +215,75 @@ def project_new(path: str, from_preset: str = "", overwrite: bool = False) -> di
     return {"path": str(dest), **prj.summary()}
 
 
-@mcp.tool()
-def project_summary(path: str, graph: str = "") -> dict:
-    """Nodes (id, type, label, position, outgoing links, export settings) and main project settings.
-    `graph` = subgraph id/label (or "a/b" for nested) to work inside a Node_Subgraph; empty = top level."""
+@mcp.tool(title="Project summary", annotations=READ_ONLY)
+def project_summary(path: ProjectPath, graph: GraphScope = "") -> dict:
+    """Gives an overview of a project: its nodes, links, export settings, annotations and main settings.
+
+    Use it to get node ids before node_get, node_set or link_add, and to check the graph after edits; use
+    node_get for every value of a single node. Offline and read-only.
+    Returns: path, graph (scope shown), app_version, settings (frames_per_second, loop_region, default texture
+    size...), annotations {groups, notes} in index order, node_count and nodes [{id, type, label, pos, links
+    going out of the node, export settings for Node_Export_* nodes, subgraph_nodes for subgraphs}]."""
     return Project.load(_abs(path)).enter(graph).summary()
 
 
-@mcp.tool()
-def node_get(path: str, node_id: str, graph: str = "") -> dict:
-    """All parameter values, curves, gradients, spline points, parameter pins and links of one node
-    (id or unique label).
-    `graph` = subgraph id/label (or "a/b" for nested) to work inside a Node_Subgraph; empty = top level."""
+@mcp.tool(title="Get node", annotations=READ_ONLY)
+def node_get(path: ProjectPath, node_id: NodeRef, graph: GraphScope = "") -> dict:
+    """Returns every detail of one node: parameter values, curves, gradients, spline points, pins and links.
+
+    Use it before node_set, curve_set, gradient_set, spline_set or node_set_data to see current values and exact
+    names; use project_summary for the whole graph. Offline and read-only.
+    Returns: id, type, label, pos, disabled, params {name: value} ('<driven by link>' when a Signal drives it),
+    curves {name: [[position, value], ...]}, gradients, spline_points, subgraph pins for subgraphs,
+    parameter_pins, outgoing and incoming links, known_inputs and known_outputs."""
     return Project.load(_abs(path)).enter(graph).node_detail(node_id)
 
 
-@mcp.tool()
-def node_add(path: str, node_type: str, params: dict | None = None, label: str = "",
-             position: list[float] | None = None, graph: str = "") -> dict:
-    """Adds a node with IlluGen's defaults, then applies `params` (name -> value; vectors as lists).
-    Returns the new node id. Position [x, y] defaults to the right of the existing nodes."""
+@mcp.tool(title="Add node", annotations=ADD)
+def node_add(
+    path: ProjectPath,
+    node_type: Annotated[str, Field(description=(
+        "Node type from list_node_types, e.g. 'Node_Grayscale_Noise' (case, spaces and 'Node_' prefix optional)."))],
+    params: Annotated[dict[str, Any] | None, Field(description=(
+        "Parameter values to set, {name: value}, names and kinds from describe_node_type. Vectors and colors as "
+        "lists ([x, y], [r, g, b, a]), enums as strings. Omitted parameters keep IlluGen's defaults."))] = None,
+    label: Annotated[str, Field(description=(
+        "Optional display label. A unique label can then replace the id in the other tools."))] = "",
+    position: Annotated[list[float] | None, Field(description=(
+        "[x, y] position in the node editor. Default: to the right of the right-most node."))] = None,
+    graph: GraphScope = "",
+) -> dict:
+    """Adds a node to the graph with IlluGen's default values, optionally setting some parameters.
+
+    Writes the project file in place. Parameter values are checked: an unknown name or invalid enum value fails
+    with suggestions and nothing is saved; a value outside the UI range is kept and reported in warnings.
+    Connect the new node with link_add afterwards.
+    Returns: id (string id of the new node), type, and warnings if any."""
     prj = Project.load(_abs(path)).enter(graph)
     node = prj.add_node(node_type, params or {}, label, position)
     prj.save()
     return _ok(prj, id=str(node["id"]), type=node["type"])
 
 
-@mcp.tool()
-def node_set(path: str, node_id: str, params: dict | None = None, label: str | None = None,
-             position: list[float] | None = None, disabled: bool | None = None, graph: str = "") -> dict:
-    """Changes parameter values (name -> value) and/or label, position, disabled flag of a node."""
+@mcp.tool(title="Set node", annotations=EDIT)
+def node_set(
+    path: ProjectPath,
+    node_id: NodeRef,
+    params: Annotated[dict[str, Any] | None, Field(description=(
+        "Parameter values to change, {name: value}, same format as node_add. Other parameters are left as is."))] = None,
+    label: Annotated[str | None, Field(description="New display label; omit to keep it.")] = None,
+    position: Annotated[list[float] | None, Field(description="New [x, y] position; omit to keep it.")] = None,
+    disabled: Annotated[bool | None, Field(description=(
+        "true bypasses the node in IlluGen (a disabled export node is skipped by project_render); false "
+        "re-enables it; omit to keep it."))] = None,
+    graph: GraphScope = "",
+) -> dict:
+    """Changes an existing node's parameter values, label, position or disabled flag.
+
+    Only what you pass changes. Writes the project file in place; values are checked like in node_add. For
+    curves, gradients and spline points use curve_set, gradient_set and spline_set.
+    Returns: changed {name: new value} and warnings (value outside the UI range, or parameter currently driven
+    by a link, in which case the value only applies once unlinked)."""
     prj = Project.load(_abs(path)).enter(graph)
     changed = prj.set_params(node_id, params) if params else {}
     prj.update_node(node_id, label=label, pos=position, disabled=disabled)
@@ -188,44 +291,83 @@ def node_set(path: str, node_id: str, params: dict | None = None, label: str | N
     return _ok(prj, changed=changed)
 
 
-@mcp.tool()
-def node_remove(path: str, node_id: str, graph: str = "") -> dict:
-    """Deletes a node and every link pointing to it."""
+@mcp.tool(title="Remove node", annotations=DELETE)
+def node_remove(path: ProjectPath, node_id: NodeRef, graph: GraphScope = "") -> dict:
+    """Deletes a node from the graph, with its outgoing links and every link from other nodes into it.
+
+    Writes the project file in place and cannot be undone: copy the file first if you may need the node back.
+    To bypass a node without losing it, use node_set(disabled=true) instead.
+    Returns: removed_links, the number of links from other nodes that pointed to the deleted node."""
     prj = Project.load(_abs(path)).enter(graph)
     removed = prj.remove_node(node_id)
     prj.save()
     return {"removed_links": removed}
 
 
-@mcp.tool()
-def link_add(path: str, from_node: str, from_pin: str, to_node: str, to_pin: str, graph: str = "",
-             modulation_range: list | None = None) -> dict:
-    """Connects output pin `from_pin` of `from_node` to input pin `to_pin` of `to_node`
-    (replaces any existing connection into that input). Pin data types are checked (Grayscale/Color/UV...).
-    Parameter pins (e.g. 'Scale', 'Seed') let a Signal (Oscillator, Cycle, Constant...) drive a parameter;
-    optional inputs (e.g. Levels 'In Low mod') are exposed automatically. Subgraph pins = labels of its
-    inner Node_Input/Node_Output nodes. modulation_range ([min, max] in 0..1, or one pair per vector
-    component) sets how a signal maps onto a parameter pin's range.
-    `graph` = subgraph id/label (or "a/b" for nested) to work inside a Node_Subgraph; empty = top level."""
+@mcp.tool(title="Link pins", annotations=EDIT)
+def link_add(
+    path: ProjectPath,
+    from_node: Annotated[str, Field(description="Source node id or unique label.")],
+    from_pin: Annotated[str, Field(description="Output pin name on the source node (see describe_node_type).")],
+    to_node: Annotated[str, Field(description="Destination node id or unique label.")],
+    to_pin: Annotated[str, Field(description=(
+        "Input pin name on the destination node: a regular input, a parameter pin or a subgraph input."))],
+    graph: GraphScope = "",
+    modulation_range: Annotated[list | None, Field(description=(
+        "Only for parameter pins: [min, max] in 0..1 of the parameter range the Signal sweeps, or one [min, max] "
+        "pair per vector component. Default: the full range."))] = None,
+) -> dict:
+    """Connects an output pin of one node to an input pin of another.
+
+    Any existing connection into that input is replaced. Pin data kinds are checked (Grayscale, Color, UV...) and
+    a mismatch fails with an explanation. Parameter pins (e.g. 'Scale', 'Seed') let a Signal node (Oscillator,
+    Cycle, Constant...) drive a parameter; optional inputs (e.g. Levels 'In Low mod') are exposed automatically.
+    Subgraph pins are the labels of the subgraph's inner Node_Input/Node_Output nodes. Writes the project file in
+    place.
+    Returns: link {from_node, from_pin, to_node, to_pin} and warnings if any."""
     prj = Project.load(_abs(path)).enter(graph)
     link = prj.link(from_node, from_pin, to_node, to_pin, modulation_range)
     prj.save()
     return _ok(prj, link=link)
 
 
-@mcp.tool()
-def link_remove(path: str, to_node: str, to_pin: str, from_node: str = "", graph: str = "") -> dict:
-    """Removes the connection(s) into input `to_pin` of `to_node` (optionally only from `from_node`)."""
+@mcp.tool(title="Unlink pin", annotations=DELETE)
+def link_remove(
+    path: ProjectPath,
+    to_node: Annotated[str, Field(description="Node id or unique label whose input is disconnected.")],
+    to_pin: Annotated[str, Field(description="Input pin name to disconnect.")],
+    from_node: Annotated[str, Field(description=(
+        "Optional: only remove links coming from this node (id or unique label). Empty = from any node."))] = "",
+    graph: GraphScope = "",
+) -> dict:
+    """Disconnects an input pin: removes the link(s) arriving at `to_pin` of `to_node`.
+
+    Writes the project file in place. If the pin drove a parameter, the parameter gets a fixed value again (its
+    default if it had none). Removing nothing is not an error. node_get lists a node's incoming links.
+    Returns: removed, the number of links deleted (0 if the pin was not connected)."""
     prj = Project.load(_abs(path)).enter(graph)
     n = prj.unlink(to_node, to_pin, from_node or None)
     prj.save()
     return {"removed": n}
 
 
-@mcp.tool()
-def project_set_settings(path: str, frames_per_second: float | None = None, loop_region: list[float] | None = None,
-                         default_texture_width: str | None = None, default_texture_height: str | None = None) -> dict:
-    """Project settings. Texture sizes are enum strings such as "_512", "_1024", "_2048"."""
+@mcp.tool(title="Project settings", annotations=EDIT)
+def project_set_settings(
+    path: ProjectPath,
+    frames_per_second: Annotated[float | None, Field(description="Animation frame rate, e.g. 30 or 60.")] = None,
+    loop_region: Annotated[list[float] | None, Field(description=(
+        "[start, end] of the animation loop, in seconds (e.g. [0, 2] = 2 s, 120 frames at 60 fps)."))] = None,
+    default_texture_width: Annotated[str | None, Field(description=(
+        "Default texture width, a power-of-two enum string from '_1' to '_16384', e.g. '_512', '_1024', '_2048'."))] = None,
+    default_texture_height: Annotated[str | None, Field(description=(
+        "Default texture height, same values as default_texture_width."))] = None,
+) -> dict:
+    """Changes project-wide settings: frame rate, animation loop region and default texture size.
+
+    Only the values you pass change; omitted ones are kept. Applies to the whole project (top-level graph and
+    subgraphs). Writes the project file in place. The resolution of an individual export is set on its export
+    node with node_set.
+    Returns the resulting settings, same shape as project_summary.settings."""
     prj = Project.load(_abs(path))
     s = prj.data["settings"]
     if frames_per_second is not None:
@@ -242,78 +384,156 @@ def project_set_settings(path: str, frames_per_second: float | None = None, loop
 
 # ---------------------------------------------------------------- curves, gradients, splines, subgraphs
 
-@mcp.tool()
-def curve_set(path: str, node_id: str, curve: str, points: list, interpolation: str = "smooth",
-              graph: str = "") -> dict:
-    """Replaces a node curve (names from node_get/describe_node_type, e.g. Noise 'Final remap', Levels
-    'Main remap', Oscillator 'custom_waveform'). points = [[position, value], ...] (positions usually 0..1)
-    or dicts {position, value, interpolation}. interpolation: smooth | linear | constant | bezier."""
+@mcp.tool(title="Set curve", annotations=REPLACE)
+def curve_set(
+    path: ProjectPath,
+    node_id: NodeRef,
+    curve: Annotated[str, Field(description=(
+        "Curve name as shown by node_get or describe_node_type, e.g. Noise 'Final remap', Levels 'Main remap', "
+        "Oscillator 'custom_waveform'."))],
+    points: Annotated[list, Field(description=(
+        "At least 2 keys: [[position, value], ...] (positions usually 0..1), or dicts "
+        "{position, value, interpolation} to vary the interpolation per key."))],
+    interpolation: Annotated[Literal["smooth", "linear", "constant", "bezier"], Field(description=(
+        "Interpolation for keys that do not set their own."))] = "smooth",
+    graph: GraphScope = "",
+) -> dict:
+    """Replaces all the keys of a node's curve (remap curves, custom oscillator waveforms...).
+
+    The previous keys are discarded. Writes the project file in place.
+    Returns: curve (name written) and keys (number of keys)."""
     prj = Project.load(_abs(path)).enter(graph)
     res = prj.set_curve(node_id, curve, points, interpolation)
     prj.save()
     return res
 
 
-@mcp.tool()
-def gradient_set(path: str, node_id: str, stops: list, color_space: str = "", index: int = 0,
-                 graph: str = "") -> dict:
-    """Replaces a color gradient (Color Ramp, Color Interpolate, Geometry Combine Color).
-    stops = [[position 0..1, color], ...] with color = [r,g,b,a] floats 0..1 or "#rrggbb[aa]".
-    color_space: RGB | OKLab | sRGB | Constant | Beer_Lambert (empty = keep)."""
+@mcp.tool(title="Set gradient", annotations=REPLACE)
+def gradient_set(
+    path: ProjectPath,
+    node_id: NodeRef,
+    stops: Annotated[list, Field(description=(
+        "At least one stop: [[position 0..1, color], ...], color as [r, g, b, a] floats 0..1 or '#rrggbb[aa]'."))],
+    color_space: Annotated[Literal["", "RGB", "OKLab", "sRGB", "Constant", "Beer_Lambert"], Field(description=(
+        "Interpolation space between stops. Empty = keep the current one."))] = "",
+    index: Annotated[int, Field(description="Which gradient of the node, for nodes with several. 0 = first.")] = 0,
+    graph: GraphScope = "",
+) -> dict:
+    """Replaces a node's color gradient (Color Ramp, Color Interpolate, Geometry Combine Color...).
+
+    The previous stops are discarded. Fails if the node has no gradient. Writes the project file in place.
+    Returns: stops (number written) and color_space."""
     prj = Project.load(_abs(path)).enter(graph)
     res = prj.set_gradient(node_id, stops, color_space or None, index)
     prj.save()
     return res
 
 
-@mcp.tool()
-def spline_set(path: str, node_id: str, points: list, closed: bool = False, edges: list | None = None,
-               graph: str = "") -> dict:
-    """Control points of Grayscale_Spline, Geometry_Sweep, Geometry_Points_Shape ([x, y, z] in scene units)
-    and Utils_Lattice ([x, y] in 0..1). Points are chained in order (closed=true loops back), or pass
-    explicit edges [[i, j], ...] for branching shapes."""
+@mcp.tool(title="Set spline points", annotations=REPLACE)
+def spline_set(
+    path: ProjectPath,
+    node_id: NodeRef,
+    points: Annotated[list, Field(description=(
+        "Control points in order: [x, y, z] in scene units for Grayscale_Spline, Geometry_Sweep and "
+        "Geometry_Points_Shape; [x, y] in 0..1 for Utils_Lattice."))],
+    closed: Annotated[bool, Field(description="Connect the last point back to the first (closed shape).")] = False,
+    edges: Annotated[list | None, Field(description=(
+        "Optional explicit segments [[i, j], ...] between point indexes, for branching shapes. Overrides the "
+        "default chaining."))] = None,
+    graph: GraphScope = "",
+) -> dict:
+    """Replaces the control points of a spline, sweep, point-shape or lattice node.
+
+    Points are chained in order unless `edges` is given. The previous points are discarded. Fails if the node has
+    no spline or lattice points. Writes the project file in place.
+    Returns: points (number written) and edges (number of segments, when applicable)."""
     prj = Project.load(_abs(path)).enter(graph)
     res = prj.set_spline(node_id, points, closed, edges)
     prj.save()
     return res
 
 
-@mcp.tool()
-def node_set_data(path: str, node_id: str, key: str, value, graph: str = "") -> dict:
-    """Escape hatch for any other node.data field shown by node_get (tagged JSON: vectors as
-    {"__vec__": "f3", "v": [x, y, z]}). Validate with project_validate(engine=true) afterwards."""
+@mcp.tool(title="Set raw node data", annotations=REPLACE)
+def node_set_data(
+    path: ProjectPath,
+    node_id: NodeRef,
+    key: Annotated[str, Field(description=(
+        "Name of an existing field of the node's data block. An unknown name fails and lists the available fields."))],
+    value: Annotated[Any, Field(description=(
+        "New value as tagged JSON, in the same form node_get uses: vectors as {\"__vec__\": \"f3\", \"v\": [x, y, z]}."))],
+    graph: GraphScope = "",
+) -> dict:
+    """Low-level escape hatch: overwrites one raw field of a node's internal data block.
+
+    Use it only for fields that node_set, curve_set, gradient_set and spline_set do not cover. The value is
+    written without type checking, so run project_validate(engine=true) afterwards. Writes the project file in
+    place.
+    Returns {"ok": true}."""
     prj = Project.load(_abs(path)).enter(graph)
     prj.set_data(node_id, key, value)
     prj.save()
     return {"ok": True}
 
 
-@mcp.tool()
-def subgraph_expose_param(path: str, subgraph: str, inner_node: str, param: str, label: str = "",
-                          graph: str = "") -> dict:
-    """Shows a parameter of a node inside `subgraph` on the subgraph node itself.
-    To build a subgraph: node_add('Subgraph'), then node_add/link_add with graph=<subgraph id> to add
-    Node_Input (label = input pin name), inner nodes and a Node_Output (label = output pin name)."""
+@mcp.tool(title="Expose subgraph parameter", annotations=EDIT)
+def subgraph_expose_param(
+    path: ProjectPath,
+    subgraph: Annotated[str, Field(description="Id or unique label of the Node_Subgraph node.")],
+    inner_node: Annotated[str, Field(description="Id or unique label of the node inside the subgraph.")],
+    param: Annotated[str, Field(description="Parameter name on the inner node (see describe_node_type).")],
+    label: Annotated[str, Field(description="Name shown on the subgraph node. Empty = the parameter name.")] = "",
+    graph: GraphScope = "",
+) -> dict:
+    """Shows a parameter of a node inside a subgraph on the subgraph node itself, so it can be tweaked from outside.
+
+    To build a subgraph: node_add('Subgraph'), then node_add and link_add with graph=<subgraph id> to add a
+    Node_Input (its label becomes an input pin name), the inner nodes and a Node_Output (its label becomes an
+    output pin name). Writes the project file in place.
+    Returns: id of the exposed parameter, node_id, param_name and label."""
     prj = Project.load(_abs(path)).enter(graph)
     res = prj.expose_param(subgraph, inner_node, param, label)
     prj.save()
     return res
 
 
-@mcp.tool()
-def annotation_add(path: str, kind: str, text: str, around_nodes: list | None = None, position: list | None = None,
-                   size: list | None = None, color_idx: int = 0, graph: str = "") -> dict:
-    """Adds a graph annotation. kind='group': framed comment box (around_nodes = node ids to frame
-    automatically, or position+size); kind='note': free text note at position."""
+@mcp.tool(title="Add annotation", annotations=ADD)
+def annotation_add(
+    path: ProjectPath,
+    kind: Annotated[Literal["group", "note"], Field(description=(
+        "'group' = framed comment box drawn behind nodes; 'note' = free text label."))],
+    text: Annotated[str, Field(description="Comment of the group, or text of the note.")],
+    around_nodes: Annotated[list | None, Field(description=(
+        "Groups: ids or labels of the nodes to frame; position and size are computed from them."))] = None,
+    position: Annotated[list | None, Field(description=(
+        "[x, y] top-left corner. Required unless around_nodes is given."))] = None,
+    size: Annotated[list | None, Field(description=(
+        "[width, height]. Default 600 x 400 for a group, 460 x 60 for a note."))] = None,
+    color_idx: Annotated[int, Field(description="Groups: color index of the frame. 0 = default color.")] = 0,
+    graph: GraphScope = "",
+) -> dict:
+    """Adds a comment to the node graph: a framed group around nodes, or a free text note.
+
+    Annotations only document the graph; they do not change the rendered result. Writes the project file in place.
+    Returns {"group": index} or {"note": index}, the index to pass to annotation_remove."""
     prj = Project.load(_abs(path)).enter(graph)
     res = prj.add_annotation(kind, text, position, size, around_nodes, color_idx)
     prj.save()
     return res
 
 
-@mcp.tool()
-def annotation_remove(path: str, kind: str, index: int, graph: str = "") -> dict:
-    """Removes group/note number `index` (as listed in project_summary.annotations)."""
+@mcp.tool(title="Remove annotation", annotations=DELETE)
+def annotation_remove(
+    path: ProjectPath,
+    kind: Annotated[Literal["group", "note"], Field(description="Kind of annotation to remove.")],
+    index: Annotated[int, Field(description=(
+        "Index in project_summary.annotations.groups or .notes (0-based)."))],
+    graph: GraphScope = "",
+) -> dict:
+    """Deletes one group or note annotation from the node graph.
+
+    The indexes of later annotations of the same kind shift down by one: re-read project_summary before removing
+    another. Fails if the index does not exist. Writes the project file in place.
+    Returns {"ok": true}."""
     prj = Project.load(_abs(path)).enter(graph)
     prj.remove_annotation(kind, index)
     prj.save()
@@ -340,11 +560,25 @@ def _render_copy(src: Path, output_dir: Path | None) -> tuple[Path, Project]:
     return tmp, prj
 
 
-@mcp.tool()
-def project_render(path: str, output_dir: str = "", timeout_s: int = 300, preview: bool = True) -> list:
-    """Renders the project with IlluGen (File > Export on every enabled Node_Export_* node) invisibly.
-    With output_dir, all exports are redirected there (the project file is not modified).
-    Returns produced files, IlluGen log issues and a preview of the first image."""
+@mcp.tool(title="Render project", annotations=ToolAnnotations(
+    readOnlyHint=False, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+def project_render(
+    path: ProjectPath,
+    output_dir: Annotated[str, Field(description=(
+        "Absolute folder to write every export to (created if needed). Empty = the folders set on the export "
+        "nodes, usually next to the project."))] = "",
+    timeout_s: Annotated[int, Field(description="Maximum time to wait for the export, in seconds.")] = 300,
+    preview: Annotated[bool, Field(description="Attach a downscaled preview of the first exported image.")] = True,
+) -> list:
+    """Renders the project with the real IlluGen: runs the export of every enabled Node_Export_* node.
+
+    IlluGen runs as a private, invisible instance (an IlluGen open on screen is not affected). The project file
+    itself is not modified; image files are written to output_dir or to the export nodes' folders, overwriting
+    files with the same names. Needs IlluGen installed and at least one enabled export node. Run project_validate
+    first when the graph is new.
+    Returns: a result {ok, items_written, seconds, files (written paths), exports (settings of each export node),
+    log_issues} followed by a preview image. On failure: {ok: false, error, log_issues, hint} plus screenshots of
+    IlluGen's error dialogs."""
     src = _abs(path)
     out_dir = _abs(output_dir) if output_dir else None
     if out_dir:
@@ -396,10 +630,18 @@ def project_render(path: str, output_dir: str = "", timeout_s: int = 300, previe
     return content
 
 
-@mcp.tool()
-def project_screenshot(path: str, width: int = 1600, height: int = 900) -> list:
-    """Opens the project in an invisible IlluGen and returns a screenshot of its window
-    (viewport + node graph previews). The project file is not modified."""
+@mcp.tool(title="Screenshot project", annotations=READ_ONLY)
+def project_screenshot(
+    path: ProjectPath,
+    width: Annotated[int, Field(description="Width of the invisible IlluGen window, in pixels.")] = 1600,
+    height: Annotated[int, Field(description="Height of the invisible IlluGen window, in pixels.")] = 900,
+) -> list:
+    """Opens the project in a private, invisible IlluGen and returns a screenshot of its window.
+
+    Shows the viewport and the node graph with each node's live preview: use it to check visually what a graph
+    does, or to see why a render fails. Use project_render to produce the actual image files. Works on a temporary
+    copy, so the project file is not modified. Needs IlluGen installed; takes a few seconds.
+    Returns {path} and a PNG image."""
     src = _abs(path)
     tmp, _ = _render_copy(src, None)
     try:
@@ -411,13 +653,22 @@ def project_screenshot(path: str, width: int = 1600, height: int = 900) -> list:
     return [{"path": str(src)}, Image(data=png, format="png")]
 
 
-@mcp.tool()
-def project_validate(path: str, engine: bool = False) -> list:
-    """Checks the project. Offline checks: unknown node types, unknown parameters, dangling links,
-    missing export node. `legacy_params` (informational) lists parameters of older project versions, such as
-    the shipped presets, that IlluGen renames or ignores on load. With engine=true, also loads and re-saves a copy in IlluGen and reports what the
-    real loader dropped (nodes, links), serialization errors from its log, and a screenshot of any
-    load-issue dialog."""
+@mcp.tool(title="Validate project", annotations=READ_ONLY)
+def project_validate(
+    path: ProjectPath,
+    engine: Annotated[bool, Field(description=(
+        "Also check the project in the real IlluGen (slower, needs IlluGen installed). Default false: offline "
+        "checks only."))] = False,
+) -> list:
+    """Checks a project for problems before rendering it.
+
+    Offline checks: unknown node types, unknown parameters, dangling links, missing export node. `legacy_params`
+    (informational) lists parameters of older project versions, such as the shipped presets, that IlluGen renames
+    or ignores on load. With engine=true, it also loads and re-saves a temporary copy in an invisible IlluGen,
+    runs a trial export, and reports what the real loader dropped (nodes, links), serialization errors from its log
+    and a screenshot of any load-issue dialog. The project file is never modified.
+    Returns: a report {ok, offline_issues, legacy_params, and with engine: dropped_nodes, dropped_links,
+    trial_export, engine_log_issues, load_dialog} followed by any screenshots."""
     src = _abs(path)
     prj = Project.load(src)
     report: dict = {"offline_issues": prj.validate()}
@@ -460,10 +711,15 @@ def project_validate(path: str, engine: bool = False) -> list:
     return [report, *[Image(data=p, format="png") for p in pictures]]
 
 
-@mcp.tool()
-def project_normalize(path: str) -> dict:
-    """Loads the project in IlluGen and saves it back in place (fills every default, applies IlluGen's own
-    fixes, refreshes the embedded thumbnail). A .bak copy of the original is kept."""
+@mcp.tool(title="Normalize project", annotations=EDIT)
+def project_normalize(path: ProjectPath) -> dict:
+    """Loads the project in a private, invisible IlluGen and saves it back in place, the way IlluGen writes it.
+
+    Fills in every default value, applies IlluGen's own fixes and refreshes the embedded thumbnail. Use it before
+    sharing a project built with this server, or to update a project made with an older IlluGen. Overwrites the
+    project file; a copy of the original is kept as <name>.illugen.bak (replacing any previous one). Needs IlluGen
+    installed.
+    Returns: path, backup (path of the .bak copy), log_issues from IlluGen and node_count."""
     src = _abs(path)
     shutil.copyfile(src, src.with_suffix(".illugen.bak"))
     prj = Project.load(src)
@@ -477,9 +733,14 @@ def project_normalize(path: str) -> dict:
             **{k: v for k, v in Project.load(src).summary().items() if k in ("node_count",)}}
 
 
-@mcp.tool()
-def project_thumbnail(path: str) -> list:
-    """The thumbnail embedded in the project file (no IlluGen needed)."""
+@mcp.tool(title="Project thumbnail", annotations=READ_ONLY)
+def project_thumbnail(path: ProjectPath) -> list:
+    """Returns the preview image IlluGen embedded in the project file at its last save.
+
+    Instant and offline (IlluGen not needed), but it can be outdated or missing for a project edited only through
+    this server: project_normalize refreshes it, project_screenshot and project_render show the current state.
+    Read-only.
+    Returns a JPEG image, or {thumbnail: null, hint} when the file has none."""
     data = Project.load(_abs(path)).thumbnail()
     if not data:
         return [{"thumbnail": None, "hint": "no embedded thumbnail; use project_screenshot or project_render"}]

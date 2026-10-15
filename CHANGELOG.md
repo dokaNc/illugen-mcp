@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1 - 2026-10-15
+
+- Clearer tool definitions: each tool says what it does, when to use it, what it changes and what it
+  returns, and every argument is documented.
+- Tool hints (read-only, destructive, idempotent) and titles for MCP clients.
+- `glama.json` for the Glama directory.
+
 ## 0.1.0 - 2026-10-15
 
 First public release.
